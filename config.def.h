@@ -10,9 +10,9 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display 
 static const int showsystray        = 1;        /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          	 = { "Terminess TTF Nerd Font:size=14" };
-static const char dmenufont[]       	 =	 "Terminess TTF Nerd Font:size=14"  ;
-static const char lu_chan[]       	 	 = "command:";
+static const char *fonts[]          	 = { "Terminess TTF Nerd Font:size=15" };
+static const char dmenufont[]       	 =	 "Terminess TTF Nerd Font:size=15"  ;
+static const char lu_chan[]       	 	 = "🐈 command:";
 static const char col_rich_black[]  	 = "#010203"; 
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
@@ -26,7 +26,7 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = {"Web", "Game", "Terminal", "Misc", "Media", "Notes"};
+static const char *tags[] = {"Web", "Code", "Terminal", "Misc", "Slack", "Notes", "Batch"};
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -35,7 +35,9 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Minecraft Launcher",     NULL,       NULL,       0,            1,           -1 },
+	{ "Galculator",     NULL,       NULL,       0,            1,           -1 },
+	{ "Slack",  	NULL,       NULL,       1 << 4,       0,           -1 },
+	{ "notion-app",  	NULL,       NULL,       1 << 5,       0,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
 };
 
@@ -61,6 +63,8 @@ static const Layout layouts[] = {
 #define XF86AudioMute				0x1008ff12
 #define XF86AudioLowerVolume		0x1008ff11
 #define XF86AudioRaiseVolume		0x1008ff13
+#define XF86Calculator		0x1008ff1d
+#define XF86Mail		0x1008ff19
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
@@ -72,41 +76,45 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *dmenucmd[] 			= { "dmenu_run", "-p", lu_chan, "-fn", dmenufont, "-nb", col_rich_black,"-l", "5", "-c", "-i",  NULL };
-static const char *termcmd[]            = { "tilix", NULL };
-static const char *termuxcmd[]          = { "kitty", NULL };
+static const char *dmenucmd[] 					= { "dmenu_run", "-p", lu_chan, "-fn", dmenufont, "-nb", col_rich_black,"-l", "5", "-c", "-i",  NULL };
+static const char *termcmd[]            = { "xterm", NULL };
+static const char *termuxcmd[]          = { "twork.sh", NULL };
 static const char *lockcmd[]            = { "i3lock-fancy", NULL };
 static const char *browsercmd[]         = { "browser_chooser", NULL };
-static const char *filecmd[]            = { "nautilus",  NULL };
+static const char *filecmd[]            = { "pcmanfm",  NULL };
 static const char *cmdsoundup[]         = { "amixer", "-q", "sset", "Master", "5%+", NULL };
 static const char *cmdsounddown[]       = { "amixer", "-q", "sset", "Master", "5%-", NULL };
-static const char *cmdsoundtoggle[] 	= { "amixer", "-q", "sset", "Master", "toggle", NULL };
+static const char *cmdsoundtoggle[] 		= { "amixer", "-q", "sset", "Master", "toggle", NULL };
 static const char *cmdmictoggle[] 	    = { "amixer", "set", "Capture", "toggle", NULL };
-static const char *cmdluzup[]			= { "light", "-A",  "10", NULL };
-static const char *cmdluzdown[]			= { "light", "-U", "10", NULL };
-static const char *cmdmonitor[]			= { "tela", NULL };
-static const char *cmdcafeina[]			= { "cafeina.sh", NULL };
-static const char *cmdscreenshot[]		= { "xfce4-screenshooter", NULL };
-static const char *cmdclip[]			= { "clipmenu", "-fn", dmenufont, "-nb", col_rich_black, "-c", "-p", "📋 clipmenu:", "-i", NULL };
+static const char *cmdluzup[]						= { "light", "-A",  "10", NULL };
+static const char *cmdluzdown[]					= { "light", "-U", "10", NULL };
+static const char *cmdcalculator[]			= { "galculator", NULL };
+static const char *cmdmonitor[]					= { "tela", NULL };
+static const char *cmdcafeina[]					= { "cafeina.sh", NULL };
+static const char *cmdscreenshot[]			= { "xfce4-screenshooter", NULL };
+static const char *cmdvpn[]							= { "vpn_toggle.sh", NULL };
+static const char *cmdclip[]						= { "clipmenu", "-fn", dmenufont, "-nb", col_rich_black, "-c", "-p", "📋 clipmenu:", "-i", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,			            XK_Print,  spawn,          {.v = cmdscreenshot } },
-	{ MODKEY,			            XK_p,      spawn,          {.v = cmdclip } },
+	{ MODKEY,			            			XK_Print,  spawn,          {.v = cmdscreenshot } },
+	{ MODKEY,			            			XK_p,      spawn,          {.v = cmdclip } },
 	{ MODKEY,                       XK_Up,     spawn,          {.v = cmdluzup } },
-	{ MODKEY,			            XK_c,      spawn,          {.v = cmdcafeina } },
+	{ MODKEY,			            			XK_c,      spawn,          {.v = cmdcafeina } },
 	{ MODKEY|ControlMask,           XK_m,      spawn,          {.v = cmdmonitor } },
 	{ MODKEY,                       XK_Down,   spawn,          {.v = cmdluzdown } },
 	{ MODKEY,                       XK_Right,  spawn,          {.v = cmdsoundup } },
 	{ MODKEY,                       XK_Left,   spawn,          {.v = cmdsounddown } },
-    { MODKEY,                       XK_End,    spawn,          {.v = cmdsoundtoggle } },
-    { MODKEY,                       XK_Home,   spawn,          {.v = cmdmictoggle } },
-    { 0,                            XF86MonBrightnessDown,  	spawn,         	{.v = cmdluzdown } },
+  { MODKEY,                       XK_End,    spawn,          {.v = cmdsoundtoggle } },
+  { MODKEY,                       XK_Home,   spawn,          {.v = cmdmictoggle } },
+  { 0,                            XF86MonBrightnessDown,  	spawn,         	{.v = cmdluzdown } },
 	{ 0,                            XF86MonBrightnessUp,       	spawn,         	{.v = cmdluzup } },
-    { 0,                            XF86AudioMute,             	spawn,          {.v = cmdsoundtoggle } },
+  { 0,                            XF86AudioMute,             	spawn,          {.v = cmdsoundtoggle } },
 	{ 0,                            XF86AudioRaiseVolume,      	spawn,          {.v = cmdsoundup } },
 	{ 0,                            XF86AudioLowerVolume,      	spawn,          {.v = cmdsounddown } },
-	{ 0,                       		XF86AudioMicMute,   		spawn,          {.v = cmdmictoggle } },
+	{ 0,                       			XF86AudioMicMute,   		spawn,          {.v = cmdmictoggle } },
+	{ 0,                       			XF86Calculator,   		spawn,          {.v = cmdcalculator } },
+	{ 0,                       			XF86Mail,   		spawn,          {.v = cmdvpn } },
 	{ MODKEY,                       XK_r,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ControlMask,           XK_l,      spawn,          {.v = lockcmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termuxcmd } },
