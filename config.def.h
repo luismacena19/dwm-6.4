@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayonleft = 0;    /* 0: systray in the right corner, >0: systray on left of status text */
@@ -10,9 +10,9 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display 
 static const int showsystray        = 1;        /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          	 = { "Terminess TTF Nerd Font:size=15" };
-static const char dmenufont[]       	 =	 "Terminess TTF Nerd Font:size=15"  ;
-static const char lu_chan[]       	 	 = "🐈 command:";
+static const char *fonts[]          	 = { "Terminess TTF Nerd Font:size=17" };
+static const char dmenufont[]       	 =	 "Terminess TTF Nerd Font:size=14"  ;
+static const char lu_chan[]       	 	 = "🐈 commands:";
 static const char col_rich_black[]  	 = "#010203"; 
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
@@ -26,7 +26,7 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = {"Web", "Code", "Terminal", "Misc", "Slack", "Notes", "Batch"};
+static const char *tags[] = {"Web🐈", "Code🐈", "Terminal🐈", "Misc🐈", "Slack🐈", "Notes🐈", "Batman🐈"};
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -94,11 +94,13 @@ static const char *cmdcafeina[]					= { "cafeina.sh", NULL };
 static const char *cmdscreenshot[]			= { "xfce4-screenshooter", NULL };
 static const char *cmdvpn[]							= { "vpn_toggle.sh", NULL };
 static const char *cmdclip[]						= { "clipmenu", "-fn", dmenufont, "-nb", col_rich_black, "-c", "-p", "📋 clipmenu:", "-i", NULL };
+static const char *cmdpass[]						= { "passmenu", "-fn", dmenufont, "-nb", col_rich_black, "-l", "5", "-c", "-i", "-p", "Pass", NULL  };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,			            			XK_Print,  spawn,          {.v = cmdscreenshot } },
 	{ MODKEY,			            			XK_p,      spawn,          {.v = cmdclip } },
+	{ MODKEY|ShiftMask,			        XK_p,      spawn,          {.v = cmdpass } },
 	{ MODKEY,                       XK_Up,     spawn,          {.v = cmdluzup } },
 	{ MODKEY,			            			XK_c,      spawn,          {.v = cmdcafeina } },
 	{ MODKEY|ControlMask,           XK_m,      spawn,          {.v = cmdmonitor } },
@@ -117,8 +119,8 @@ static const Key keys[] = {
 	{ 0,                       			XF86Mail,   		spawn,          {.v = cmdvpn } },
 	{ MODKEY,                       XK_r,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ControlMask,           XK_l,      spawn,          {.v = lockcmd } },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termuxcmd } },
-	{ MODKEY|ControlMask,           XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY|ControlMask,           XK_Return, spawn,          {.v = termuxcmd } },
 	{ MODKEY,                       XK_e,      spawn,          {.v = filecmd } },
 	{ MODKEY,                       XK_o,      spawn,          {.v = browsercmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
